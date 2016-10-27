@@ -145,7 +145,7 @@ public class AllCitiesFragment extends Fragment {
         // init stuff.
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
         Map<String, String> currentChildMap = null;
-        String datetime,temperature,stationName,humidity;
+        String datetime,temperature,stationName,wetherCondition;
 
 
         // cycle on the cities and create list entries.
@@ -156,11 +156,12 @@ public class AllCitiesFragment extends Fragment {
             stationName = city.getStationName();
             datetime = city.getDatetime();
             temperature = city.getTemperature();
-
+            wetherCondition = city.getWeatherConditionCode();
 
             currentChildMap.put(weatherObservation.getStationName(),stationName);
             currentChildMap.put(weatherObservation.getDatetime(),datetime);
             currentChildMap.put(weatherObservation.getTemperature(),temperature);
+            currentChildMap.put(weatherObservation.getWeatherConditionCode(),temperature);
 
         }
   final AllCitiesRecyclerViewadapter adapter = new AllCitiesRecyclerViewadapter(data);
