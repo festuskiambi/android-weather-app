@@ -1,23 +1,25 @@
 package com.festus.refuniteandroidchallenge.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.festus.refuniteandroidchallenge.R;
-import com.festus.refuniteandroidchallenge.activities.MainActivity;
+import com.festus.refuniteandroidchallenge.adapters.AllCitiesRecyclerViewadapter;
 import com.festus.refuniteandroidchallenge.models.Geoname;
 import com.festus.refuniteandroidchallenge.models.Location;
+import com.festus.refuniteandroidchallenge.models.Weather;
+import com.festus.refuniteandroidchallenge.models.WeatherObservation;
 import com.festus.refuniteandroidchallenge.util.ReadStringFfromUrl;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -30,16 +32,17 @@ import java.util.Map;
 
 
 public class AllCitiesFragment extends Fragment {
-    private static final String COORD_N = "1.9577";
-    private static final String COORD_S = "-10";
-    private static final String COORD_W = "-20";
-    private static final String COORD_E = "37.2972";
+    private static final String COORD_N = "4.62933";
+    private static final String COORD_S = "-2.71712";
+    private static final String COORD_W = "34.90884";
+    private static final String COORD_E = "41.899059";
     private ReadStringFfromUrl readingFromUrl = new ReadStringFfromUrl();
-    private Location cities;
+    private Weather cities;
     private static final int CODE_OK = 0;
     private static final int CODE_ERROR = 1;
     private static final String TAG = "PlacesFromJson";
-
+    private static RecyclerView citiyRecyclerView;
+    public static WeatherObservation weatherObservation = new WeatherObservation();
 
     public AllCitiesFragment() {
         // Required empty public constructor
@@ -58,6 +61,13 @@ public class AllCitiesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_cities, container, false);
+        /**
+         * layout items
+         */
+        citiyRecyclerView = (RecyclerView)view.findViewById(R.id.all_city_recycler_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),1,false);
+        citiyRecyclerView.setLayoutManager(linearLayoutManager);
+
         callService();
         return  view;
 
@@ -68,8 +78,8 @@ public class AllCitiesFragment extends Fragment {
             if (msg.what == CODE_ERROR) {
                 Toast.makeText(getActivity(), "Service error.", Toast.LENGTH_SHORT).show();
             }
-            else if (cities != null && cities.getGeonames() != null) {
-                Log.i(TAG, "locations found: " + cities.getGeonames().size());
+            else if (cities != null && cities.getWeatherObservations() != null) {
+                Log.i(TAG, "locations found: " + cities.getWeatherObservations().size());
                 buildList();
             }
         }
@@ -82,16 +92,15 @@ public class AllCitiesFragment extends Fragment {
 
                 // init stuff.
                 Looper.prepare();
-                cities = new Location();
+                cities = new Weather();
                 boolean error = false;
 
                 // build the webservice URL from parameters.
-                String locationsUrl = "http://api.geonames.org/citiesJSON?lang=en&username=festuskiambi";
+                String locationsUrl= "http://api.geonames.org/weatherJSON?.2&username=festuskiambi";
                 locationsUrl += "&north="+COORD_N;
                 locationsUrl += "&south="+COORD_S;
                 locationsUrl += "&east="+COORD_E;
                 locationsUrl += "&west="+COORD_W;
-
                 String wsResponse = "";
 
                 try {
@@ -99,7 +108,7 @@ public class AllCitiesFragment extends Fragment {
                     wsResponse = readingFromUrl.doGetRequest(locationsUrl);
 
                     // deserialize the JSON response to the cities objects.
-                    cities = new Gson().fromJson(wsResponse, Location.class);
+                    cities = new Gson().fromJson(wsResponse, Weather.class);
                 }
                 catch (IOException e) {
                     // IO exception
@@ -136,27 +145,27 @@ public class AllCitiesFragment extends Fragment {
         // init stuff.
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
         Map<String, String> currentChildMap = null;
-        String line1;
-        String line2;
+        String datetime,temperature,stationName,humidity;
+
 
         // cycle on the cities and create list entries.
-        for (Geoname city : cities.getGeonames()) {
+        for (WeatherObservation city : cities.getWeatherObservations()) {
             currentChildMap = new HashMap<String, String>();
             data.add(currentChildMap);
 
-            line1 = city.getToponymName() + " (" + city.getCountrycode() + ")";
-            line2 = "Population: " + city.getPopulation();
+            stationName = city.getStationName();
+            datetime = city.getDatetime();
+            temperature = city.getTemperature();
 
-            currentChildMap.put("LABEL", line1);
-            currentChildMap.put("TEXT", line2);
+
+            currentChildMap.put(weatherObservation.getStationName(),stationName);
+            currentChildMap.put(weatherObservation.getDatetime(),datetime);
+            currentChildMap.put(weatherObservation.getTemperature(),temperature);
+
         }
+  final AllCitiesRecyclerViewadapter adapter = new AllCitiesRecyclerViewadapter(data);
+        citiyRecyclerView.setAdapter(adapter);
 
-        // create the list adapter from the created map.
-       /* adapter = new SimpleAdapter(this, data, android.R.layout.simple_list_item_2,
-                new String[] { "LABEL", "TEXT" },
-                new int[] { android.R.id.text1, android.R.id.text2 });
-
-        setListAdapter(adapter);*/
     }
 
     @Override

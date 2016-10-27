@@ -12,6 +12,8 @@ import java.util.Map;
 import com.festus.refuniteandroidchallenge.R;
 import com.festus.refuniteandroidchallenge.models.Geoname;
 
+import static com.festus.refuniteandroidchallenge.fragments.AllCitiesFragment.weatherObservation;
+
 /**
  * Created by festus on 10/27/16.
  */
@@ -32,13 +34,13 @@ public class AllCitiesRecyclerViewadapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((CityItemView) holder).cityName.setText(data.get(position).get("LABEL"));
+        ((CityItemView) holder).cityName.setText(data.get(position).get(weatherObservation.getTemperature()));
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+       return data.size();
     }
     private class CityItemView extends RecyclerView.ViewHolder  {
         public TextView cityName;
