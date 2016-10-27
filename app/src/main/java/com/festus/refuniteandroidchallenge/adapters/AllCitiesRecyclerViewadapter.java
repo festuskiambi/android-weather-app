@@ -26,7 +26,7 @@ public class AllCitiesRecyclerViewadapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.city_weather_itemview, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_location_item_view, parent, false);
         CityItemView cityItemView = new CityItemView(v);
         return cityItemView;
     }
