@@ -33,7 +33,9 @@ public class AllCitiesRecyclerViewadapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((CityItemView) holder).cityName.setText(data.get(position).get(weatherObservation.getWeatherConditionCode()));
+        ((CityItemView) holder).cityName.setText(data.get(position).get("STATIONNAME"));
+        ((CityItemView) holder).dateTime.setText(data.get(position).get("DATETIME"));
+        ((CityItemView) holder).temperature.setText(data.get(position).get("TEMPARATURE"));
 
     }
 
@@ -42,12 +44,13 @@ public class AllCitiesRecyclerViewadapter extends RecyclerView.Adapter<RecyclerV
        return data.size();
     }
     private class CityItemView extends RecyclerView.ViewHolder  {
-        public TextView cityName;
+        public TextView cityName , dateTime,temperature;
 
         public CityItemView(View itemView) {
             super(itemView);
             cityName = (TextView)itemView.findViewById(R.id.station_name_textView);
-
+            dateTime = (TextView)itemView.findViewById(R.id.date_textView) ;
+            temperature = (TextView)itemView.findViewById(R.id.temperature_textView);
         }
 
 

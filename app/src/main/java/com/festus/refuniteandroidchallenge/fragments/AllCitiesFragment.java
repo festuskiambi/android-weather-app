@@ -164,10 +164,10 @@ public class AllCitiesFragment extends Fragment {
             temperature = city.getTemperature();
             wetherCondition = city.getWeatherConditionCode();
 
-            currentChildMap.put(weatherObservation.getStationName(),stationName);
-            currentChildMap.put(weatherObservation.getDatetime(),datetime);
-            currentChildMap.put(weatherObservation.getTemperature(),temperature);
-            currentChildMap.put(weatherObservation.getWeatherConditionCode(),temperature);
+            currentChildMap.put("STATIONNAME",stationName);
+            currentChildMap.put("DATETIME",datetime);
+            currentChildMap.put("TEMPARATURE",temperature);
+
 
         }
   final AllCitiesRecyclerViewadapter adapter = new AllCitiesRecyclerViewadapter(data);
