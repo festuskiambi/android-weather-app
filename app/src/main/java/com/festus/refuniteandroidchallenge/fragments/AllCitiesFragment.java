@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.festus.refuniteandroidchallenge.R;
+
+
 import com.festus.refuniteandroidchallenge.adapters.AllCitiesRecyclerViewadapter;
 import com.festus.refuniteandroidchallenge.models.Geoname;
 import com.festus.refuniteandroidchallenge.models.Location;
@@ -44,8 +46,10 @@ public class AllCitiesFragment extends Fragment {
     private static final int CODE_ERROR = 1;
     private static final String TAG = "PlacesFromJson";
 
+
     private static RecyclerView citiyRecyclerView;
     public static WeatherObservation weatherObservation = new WeatherObservation();
+
 
 
     public AllCitiesFragment() {
@@ -65,12 +69,14 @@ public class AllCitiesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_cities, container, false);
+
         /**
          * layout items
          */
         citiyRecyclerView = (RecyclerView)view.findViewById(R.id.all_city_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),1,false);
         citiyRecyclerView.setLayoutManager(linearLayoutManager);
+
 
         callService();
         return  view;
@@ -112,7 +118,9 @@ public class AllCitiesFragment extends Fragment {
                     wsResponse = readingFromUrl.doGetRequest(locationsUrl);
 
                     // deserialize the JSON response to the cities objects.
+
                     cities = new Gson().fromJson(wsResponse, Weather.class);
+
                 }
                 catch (IOException e) {
                     // IO exception

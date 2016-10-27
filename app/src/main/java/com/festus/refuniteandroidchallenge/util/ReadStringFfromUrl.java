@@ -10,7 +10,7 @@ import okhttp3.Response;
  */
 
 public class ReadStringFfromUrl {
- public String reguest;
+
 
     OkHttpClient client = new OkHttpClient();
 
@@ -21,7 +21,7 @@ public class ReadStringFfromUrl {
                 .build();
 
         Response response = client.newCall(request).execute();
-        return response.body().string();
+        return response.body().toString();
 
 
     }

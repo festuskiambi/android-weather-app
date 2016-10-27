@@ -33,7 +33,9 @@ public class AllCitiesRecyclerViewadapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
         ((CityItemView) holder).cityName.setText(data.get(position).get(weatherObservation.getWeatherConditionCode()));
+
 
     }
 
