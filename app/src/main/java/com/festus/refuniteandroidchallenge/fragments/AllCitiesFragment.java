@@ -18,6 +18,7 @@ import com.festus.refuniteandroidchallenge.R;
 import com.festus.refuniteandroidchallenge.activities.MainActivity;
 import com.festus.refuniteandroidchallenge.models.Geoname;
 import com.festus.refuniteandroidchallenge.models.Location;
+import com.festus.refuniteandroidchallenge.models.WeatherObservation;
 import com.festus.refuniteandroidchallenge.util.ReadStringFfromUrl;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -39,6 +40,7 @@ public class AllCitiesFragment extends Fragment {
     private static final int CODE_OK = 0;
     private static final int CODE_ERROR = 1;
     private static final String TAG = "PlacesFromJson";
+    public static WeatherObservation weatherObservation = new WeatherObservation();
 
 
     public AllCitiesFragment() {
@@ -136,8 +138,8 @@ public class AllCitiesFragment extends Fragment {
         // init stuff.
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
         Map<String, String> currentChildMap = null;
-        String line1;
-        String line2;
+        String stationName,dateTime,Temparature,weatherConditionCode;
+
 
         // cycle on the cities and create list entries.
         for (Geoname city : cities.getGeonames()) {
