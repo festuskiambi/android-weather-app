@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
-        android:id="@+id/text_books_viewpager"
+        android:id="@+id/mainactivity_viewpager"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
     </android.support.v4.view.ViewPager>

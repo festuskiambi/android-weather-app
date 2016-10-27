@@ -3,107 +3,140 @@ package com.festus.refuniteandroidchallenge.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.festus.refuniteandroidchallenge.R;
+import com.festus.refuniteandroidchallenge.activities.MainActivity;
+import com.festus.refuniteandroidchallenge.models.Location;
+import com.festus.refuniteandroidchallenge.util.ReadStringFfromUrl;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AllCitiesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AllCitiesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.io.IOException;
+
+
 public class AllCitiesFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String COORD_N = "1.9577";
+    private static final String COORD_S = "-10";
+    private static final String COORD_W = "-20";
+    private static final String COORD_E = "37.2972";
+    private ReadStringFfromUrl readingFromUrl = new ReadStringFfromUrl();
+    private Location cities;
+    private static final int CODE_OK = 0;
+    private static final int CODE_ERROR = 1;
+    private static final String TAG = "PlacesFromJson";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
 
     public AllCitiesFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AllCitiesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AllCitiesFragment newInstance(String param1, String param2) {
-        AllCitiesFragment fragment = new AllCitiesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_cities, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_all_cities, container, false);
+        callService();
+        return  view;
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
+    private void callService() {
+
+        // Create the thread that calls the webservice.
+        Thread loader = new Thread() {
+            public void run() {
+
+                // init stuff.
+                Looper.prepare();
+                cities = new Location();
+                boolean error = false;
+
+                // build the webservice URL from parameters.
+                String locationsUrl = "http://api.geonames.org/citiesJSON?lang=en&username=festuskiambi";
+                locationsUrl += "&north="+COORD_N;
+                locationsUrl += "&south="+COORD_S;
+                locationsUrl += "&east="+COORD_E;
+                locationsUrl += "&west="+COORD_W;
+
+                String wsResponse = "";
+
+                try {
+                    // call the service via HTTP.
+                    wsResponse = readingFromUrl.doGetRequest(locationsUrl);
+
+                    // deserialize the JSON response to the cities objects.
+                    cities = new Gson().fromJson(wsResponse, Location.class);
+                }
+                catch (IOException e) {
+                    // IO exception
+                    Log.e(TAG, e.getMessage(), e);
+                    error = true;
+                }
+                catch (IllegalStateException ise) {
+                    // Illegal state: maybe the service returned an empty string.
+                    Log.e(TAG, ise.getMessage(), ise);
+                    error = true;
+                }
+                catch (JsonSyntaxException jse) {
+                    // JSON syntax is wrong. This could be quite bad.
+                    Log.e(TAG, jse.getMessage(), jse);
+                    error = true;
+                }
+
+                if (error) {
+                    // error: notify the error to the handler.
+                    handler.sendEmptyMessage(CODE_ERROR);
+                }
+                else {
+                    // everything ok: tell the handler to show cities list.
+                    handler.sendEmptyMessage(CODE_OK);
+                }
+            }
+        };
+
+        // start the thread.
+        loader.start();
+    }
+    final Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+
+            if (msg.what == CODE_ERROR) {
+                Toast.makeText(getActivity(), "Service error.", Toast.LENGTH_SHORT).show();
+            }
+            else if (cities != null && cities.getGeonames() != null) {
+                Log.i(TAG, "locations found: " + cities.getGeonames().size());
+                //buildList();
+            }
+        }
+    };
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
 }
