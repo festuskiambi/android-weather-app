@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +17,18 @@ import android.widget.Toast;
 
 import com.festus.refuniteandroidchallenge.R;
 import com.festus.refuniteandroidchallenge.activities.MainActivity;
+import com.festus.refuniteandroidchallenge.adapters.AllCitiesRecyclerViewadapter;
+import com.festus.refuniteandroidchallenge.models.Geoname;
 import com.festus.refuniteandroidchallenge.models.Location;
 import com.festus.refuniteandroidchallenge.util.ReadStringFfromUrl;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class AllCitiesFragment extends Fragment {
@@ -33,7 +41,8 @@ public class AllCitiesFragment extends Fragment {
     private static final int CODE_OK = 0;
     private static final int CODE_ERROR = 1;
     private static final String TAG = "PlacesFromJson";
-
+    private static RecyclerView citiesRecyclerView;
+    private ArrayList<Geoname> geoNames;
 
     public AllCitiesFragment() {
         // Required empty public constructor
@@ -52,6 +61,28 @@ public class AllCitiesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_cities, container, false);
+        citiesRecyclerView = (RecyclerView)view.findViewById(R.id.all_city_recycler_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),1,false);
+        citiesRecyclerView.setLayoutManager(linearLayoutManager);
+        final AllCitiesRecyclerViewadapter adapter = new AllCitiesRecyclerViewadapter(cities);
+        citiesRecyclerView.setAdapter(adapter);
+
+
+        List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+        Map<String, String> currentChildMap = null;
+        String line1;
+        // cycle on the cities and create list entries.
+        for (Geoname city : cities.getGeonames()) {
+            currentChildMap = new HashMap<String, String>();
+            data.add(currentChildMap);
+
+            line1 = city.getToponymName() + " (" + city.getCountrycode() + ")";
+
+
+            currentChildMap.put("LABEL", line1);
+
+        }
+
         callService();
         return  view;
 
@@ -82,6 +113,7 @@ public class AllCitiesFragment extends Fragment {
 
                     // deserialize the JSON response to the cities objects.
                     cities = new Gson().fromJson(wsResponse, Location.class);
+
                 }
                 catch (IOException e) {
                     // IO exception

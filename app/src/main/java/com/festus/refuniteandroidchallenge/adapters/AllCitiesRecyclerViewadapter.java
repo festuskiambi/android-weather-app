@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.festus.refuniteandroidchallenge.R;
 import com.festus.refuniteandroidchallenge.models.Geoname;
 
@@ -14,9 +17,9 @@ import com.festus.refuniteandroidchallenge.models.Geoname;
  */
 
 public class AllCitiesRecyclerViewadapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<Geoname> geoNames;
-    public AllCitiesRecyclerViewadapter(ArrayList<Geoname> geoNames) {
-        this.geoNames = geoNames;
+    List<Map<String, String>> data;
+    public AllCitiesRecyclerViewadapter(List<Map<String, String>> data) {
+        this.data = data;
     }
 
 
@@ -29,7 +32,7 @@ public class AllCitiesRecyclerViewadapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((CityItemView) holder).cityName.setText(geoNames.get(position).getToponymName());
+        ((CityItemView) holder).cityName.setText(data.get(position).get("LABEL"));
 
     }
 
