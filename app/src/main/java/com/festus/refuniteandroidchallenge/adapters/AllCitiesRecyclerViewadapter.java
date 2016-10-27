@@ -5,12 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 
 import com.festus.refuniteandroidchallenge.R;
-import com.festus.refuniteandroidchallenge.models.Geoname;
+
+import static com.festus.refuniteandroidchallenge.fragments.AllCitiesFragment.weatherObservation;
 
 /**
  * Created by festus on 10/27/16.
@@ -25,27 +26,27 @@ public class AllCitiesRecyclerViewadapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.all_countries_item_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_location_item_view, parent, false);
         CityItemView cityItemView = new CityItemView(v);
         return cityItemView;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((CityItemView) holder).cityName.setText(data.get(position).get("LABEL"));
+        ((CityItemView) holder).cityName.setText(data.get(position).get(weatherObservation.getWeatherConditionCode()));
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+       return data.size();
     }
     private class CityItemView extends RecyclerView.ViewHolder  {
         public TextView cityName;
 
         public CityItemView(View itemView) {
             super(itemView);
-            cityName = (TextView)itemView.findViewById(R.id.location_textView);
+            cityName = (TextView)itemView.findViewById(R.id.station_name_textView);
 
         }
 
