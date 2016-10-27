@@ -11,16 +11,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.festus.refuniteandroidchallenge.R;
 import com.festus.refuniteandroidchallenge.activities.MainActivity;
+import com.festus.refuniteandroidchallenge.models.Geoname;
 import com.festus.refuniteandroidchallenge.models.Location;
 import com.festus.refuniteandroidchallenge.util.ReadStringFfromUrl;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class AllCitiesFragment extends Fragment {
@@ -56,6 +62,18 @@ public class AllCitiesFragment extends Fragment {
         return  view;
 
     }
+    final Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+
+            if (msg.what == CODE_ERROR) {
+                Toast.makeText(getActivity(), "Service error.", Toast.LENGTH_SHORT).show();
+            }
+            else if (cities != null && cities.getGeonames() != null) {
+                Log.i(TAG, "locations found: " + cities.getGeonames().size());
+                buildList();
+            }
+        }
+    };
     private void callService() {
 
         // Create the thread that calls the webservice.
@@ -113,18 +131,33 @@ public class AllCitiesFragment extends Fragment {
         // start the thread.
         loader.start();
     }
-    final Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
+    private void buildList() {
 
-            if (msg.what == CODE_ERROR) {
-                Toast.makeText(getActivity(), "Service error.", Toast.LENGTH_SHORT).show();
-            }
-            else if (cities != null && cities.getGeonames() != null) {
-                Log.i(TAG, "locations found: " + cities.getGeonames().size());
-                //buildList();
-            }
+        // init stuff.
+        List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+        Map<String, String> currentChildMap = null;
+        String line1;
+        String line2;
+
+        // cycle on the cities and create list entries.
+        for (Geoname city : cities.getGeonames()) {
+            currentChildMap = new HashMap<String, String>();
+            data.add(currentChildMap);
+
+            line1 = city.getToponymName() + " (" + city.getCountrycode() + ")";
+            line2 = "Population: " + city.getPopulation();
+
+            currentChildMap.put("LABEL", line1);
+            currentChildMap.put("TEXT", line2);
         }
-    };
+
+        // create the list adapter from the created map.
+       /* adapter = new SimpleAdapter(this, data, android.R.layout.simple_list_item_2,
+                new String[] { "LABEL", "TEXT" },
+                new int[] { android.R.id.text1, android.R.id.text2 });
+
+        setListAdapter(adapter);*/
+    }
 
     @Override
     public void onAttach(Context context) {
