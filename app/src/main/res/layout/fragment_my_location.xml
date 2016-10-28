@@ -8,5 +8,63 @@
     tools:context="com.festus.refuniteandroidchallenge.fragments.MyLocationFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mylocation_stationname"
+            android:textColor="#fff"
+            android:layout_marginTop="122dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:layout_below="@+id/mylocation_stationname"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="23dp"
+            android:id="@+id/mylocation_datetime" />
+
+        <TextView
+            android:text="45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textColor="#fff"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+
+            android:id="@+id/mylocation_temparature" />
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            app:srcCompat="@drawable/circleoutline"
+            android:layout_above="@id/mylocation_temparature"
+            android:layout_marginLeft="90dp"
+            android:layout_marginStart="90dp"
+            android:id="@+id/imageView2" />
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_centerVertical="true"
+            android:layout_height="80dp"
+            app:srcCompat="@drawable/sunny"
+            android:id="@+id/imageView3"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+           android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 </FrameLayout>
