@@ -4,7 +4,7 @@
     android:id="@+id/books_card_item"
     android:layout_gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="220dp"
+    android:layout_height="200dp"
     android:layout_marginEnd="4dp"
     android:layout_marginRight="4dp"
     android:layout_marginLeft="4dp"
@@ -13,16 +13,19 @@
     android:layout_marginBottom="4dp"
     app:cardBackgroundColor="#66ffffff"
     app:cardCornerRadius="5dp"
-    android:background="#2fffffff"
+
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground">
     <RelativeLayout
         android:layout_width="match_parent"
+
         android:layout_height="match_parent">
     <TextView
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:textSize="20sp"
         android:layout_margin="16dp"
         android:id="@+id/station_name_textView" />
 
@@ -32,16 +35,34 @@
             android:layout_height="wrap_content"
             android:id="@+id/date_textView"
             android:layout_marginRight="16dp"
+            android:textColor="#fff"
+            android:textSize="20sp"
             android:layout_below="@+id/station_name_textView"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="16dp" />
         <TextView
-            android:text="TextView"
+            android:text="15"
             android:layout_width="wrap_content"
+            android:textColor="#fff"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:textStyle="bold"
+            android:textSize="40sp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentBottom="true"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:id="@+id/temperature_textView"/>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            app:srcCompat="@drawable/circleoutline"
+            android:layout_above="@+id/temperature_textView"
+            android:layout_marginStart="62dp"
+            android:layout_marginLeft="62dp"
+            android:id="@+id/imageView" />
 
 
     </RelativeLayout>

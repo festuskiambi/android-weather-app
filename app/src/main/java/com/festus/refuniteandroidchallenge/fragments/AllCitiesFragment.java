@@ -35,8 +35,8 @@ import java.util.Map;
 
 public class AllCitiesFragment extends Fragment {
     private static final String COORD_N = "10.62933";
-    private static final String COORD_S = "-1.71712";
-    private static final String COORD_W = "20.90884";
+    private static final String COORD_S = "-2.71712";
+    private static final String COORD_W = "10.90884";
     private static final String COORD_E = "40.899059";
     private ReadStringFfromUrl readingFromUrl = new ReadStringFfromUrl();
     private Weather cities;

@@ -39,7 +39,7 @@ public class AllCitiesRecyclerViewadapter extends RecyclerView.Adapter<RecyclerV
 
         switch (position) {
             case 0:
-                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.navbg);
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.wilson);
                 break;
             case 1:
                 ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.addisababacity);
@@ -51,13 +51,22 @@ public class AllCitiesRecyclerViewadapter extends RecyclerView.Adapter<RecyclerV
                 ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.eldoret);
                 break;
             case 4:
-                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.dareslam);
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.kakuma);
                 break;
             case 5:
                 ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.kisumu);
                 break;
             case 6:
-                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.jkia);
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.lusaka);
+                break;
+            case 7:
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.nakuru);
+                break;
+            case 8:
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.wilson);
+                break;
+            case 9:
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.entebe);
                 break;
 
              default:
