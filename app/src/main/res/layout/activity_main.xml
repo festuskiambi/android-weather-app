@@ -13,13 +13,6 @@ android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
   >
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_main_activity"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#1E88E5"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" />
 
 
     <android.support.design.widget.TabLayout
@@ -34,7 +27,7 @@ android:fitsSystemWindows="true"
         android:id="@+id/tablayout_mainactvity"
         android:textSize="20sp"
         app:tabIndicatorColor="@android:color/white"
-        app:tabIndicatorHeight="4dp"/>
+        app:tabIndicatorHeight="1dp"/>
 
 </android.support.design.widget.AppBarLayout>
 

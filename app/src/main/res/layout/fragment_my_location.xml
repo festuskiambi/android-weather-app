@@ -14,7 +14,7 @@
 
 
         <TextView
-            android:text="TextView"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/mylocation_stationname"
@@ -34,7 +34,7 @@
             android:id="@+id/mylocation_datetime" />
 
         <TextView
-            android:text="45"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 

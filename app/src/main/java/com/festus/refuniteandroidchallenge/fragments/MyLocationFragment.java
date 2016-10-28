@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.festus.refuniteandroidchallenge.R;
 import com.festus.refuniteandroidchallenge.adapters.AllCitiesRecyclerViewadapter;
+import com.festus.refuniteandroidchallenge.helpers.ReceiverText;
 import com.festus.refuniteandroidchallenge.models.LocalWeatherObservation;
 import com.festus.refuniteandroidchallenge.models.MyLocationWether;
 import com.festus.refuniteandroidchallenge.models.Weather;
@@ -35,15 +37,17 @@ import java.util.Map;
 
 
 public class MyLocationFragment extends Fragment {
-    private static final String COORD_LAT = "10.62933";
-    private static final String COORD_LON = "-2.71712";
 
     private ReadStringFfromUrl readingFromUrl = new ReadStringFfromUrl();
     private MyLocationWether city;
-
     private static final int CODE_OK = 0;
     private static final int CODE_ERROR = 1;
     private static final String TAG = "mylocationFromJson";
+    private  static TextView temperature,datetime,stationname;
+    public static  String stationName,temperatureValue,dateTimeValue;
+    public static HashMap<String, Object> map = new HashMap<>();
+    private ReceiverText receiverText = new ReceiverText();
+
 
     public MyLocationFragment() {
         // Required empty public constructor
@@ -61,7 +65,13 @@ public class MyLocationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_location, container, false);
+        temperature =(TextView) view.findViewById(R.id.mylocation_temparature);
+        datetime =(TextView) view.findViewById(R.id.mylocation_datetime);
+        stationname=(TextView) view.findViewById(R.id.mylocation_stationname);
+
+
         callService();
+        loaditems();
         return view;
     }
     final Handler handler = new Handler() {
@@ -74,6 +84,7 @@ public class MyLocationFragment extends Fragment {
             else if (city!= null && city.getWeatherObservation() != null) {
                 Log.i(TAG, "result: it ran");
 
+loaditems();
             }
         }
     };
@@ -89,9 +100,7 @@ public class MyLocationFragment extends Fragment {
                 boolean error = false;
 
                 // build the webservice URL from parameters.
-                String locationsUrl= "http://api.geonames.org/findNearByWeatherJSON?lat=43&lng=-2&username=festuskiambi";
-                /*locationsUrl += "&north="+COORD_LAT;
-                locationsUrl += "&south="+COORD_LON;*/
+                String locationsUrl= "http://api.geonames.org/findNearByWeatherJSON?lat=1&lng= 36&username=festuskiambi";
 
                 String wsResponse = "";
 
@@ -106,8 +115,12 @@ public class MyLocationFragment extends Fragment {
                     try {
                         JSONObject json = new JSONObject(wsResponse);
                         JSONObject weatherObservations = json.getJSONObject("weatherObservation");
-                        String test = weatherObservations.getString("stationName");
-                        Log.i(TAG, test);
+                         stationName = weatherObservations.getString("stationName");
+                         receiverText.setStvalue(stationName);
+                        handler.sendEmptyMessage(CODE_OK);
+                       temperatureValue = weatherObservations.getString("temperature");
+                        dateTimeValue = weatherObservations.getString("datetime");
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -143,6 +156,13 @@ public class MyLocationFragment extends Fragment {
         loader.start();
     }
 
+ private void loaditems(){
+     //String x = receiverText.getStvalue();
+    // Log.e(TAG, x);
+     stationname.setText(stationName);
+     temperature.setText(temperatureValue);
+     datetime.setText(dateTimeValue);
+ }
 
 
     @Override
