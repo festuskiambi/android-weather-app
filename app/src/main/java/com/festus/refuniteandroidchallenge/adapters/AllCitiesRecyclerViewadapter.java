@@ -37,6 +37,35 @@ public class AllCitiesRecyclerViewadapter extends RecyclerView.Adapter<RecyclerV
         ((CityItemView) holder).dateTime.setText(data.get(position).get("DATETIME"));
         ((CityItemView) holder).temperature.setText(data.get(position).get("TEMPARATURE"));
 
+        switch (position) {
+            case 0:
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.navbg);
+                break;
+            case 1:
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.addisababacity);
+                break;
+            case 2:
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.entebe);
+                break;
+            case 3:
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.eldoret);
+                break;
+            case 4:
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.dareslam);
+                break;
+            case 5:
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.kisumu);
+                break;
+            case 6:
+                ((CityItemView) holder).itemView.setBackgroundResource(R.drawable.jkia);
+                break;
+
+             default:
+                 break;
+        }
+
+
+
     }
 
     @Override
