@@ -44,11 +44,11 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int i) {
             Fragment fragment=null;
             if(i==0){
-                fragment = new AllCitiesFragment();
+                fragment = new MyLocationFragment();
 
             }
             if(i==1){
-                fragment = new MyLocationFragment();
+                fragment = new AllCitiesFragment();
             }
 
             return fragment;
@@ -57,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int i) {
             if(i==0){
+                return "My Location";
 
-                return "Major Cities";
 
             }
             else{
-                return "My Location";
+                return "Other Cities";
             }
 
         }

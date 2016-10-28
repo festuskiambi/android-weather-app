@@ -16,8 +16,7 @@ import android.widget.Toast;
 
 import com.festus.refuniteandroidchallenge.R;
 import com.festus.refuniteandroidchallenge.adapters.AllCitiesRecyclerViewadapter;
-import com.festus.refuniteandroidchallenge.models.Geoname;
-import com.festus.refuniteandroidchallenge.models.Location;
+
 
 import com.festus.refuniteandroidchallenge.models.Weather;
 
